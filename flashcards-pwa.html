@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flashcards PWA - Mejorado con Sugerencias de Categorías</title>
   <meta name="theme-color" content="#2563eb">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Flashcards">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root { --primary: #2563eb; --bg: #f3f4f6; }
@@ -1272,6 +1277,15 @@ Reglas de respuesta:
     updateCategoryFilterOptions();
     renderPractice();
     updateStats();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch((err) => {
+          console.warn('No se pudo registrar el service worker:', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>
