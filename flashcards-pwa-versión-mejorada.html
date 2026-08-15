@@ -72,6 +72,7 @@
     <button class="tab-btn active" id="tab-quiz-btn" onclick="switchTab('quiz')">Práctica</button>
     <button class="tab-btn" id="tab-browse-btn" onclick="switchTab('browse')">Diccionario</button>
     <button class="tab-btn" id="tab-stats-btn" onclick="switchTab('stats')">Estadísticas</button>
+    <button class="tab-btn" id="tab-importexport-btn" onclick="switchTab('importexport')">Importar/Exportar</button>
   </div>
 
   <!-- VISTA 1: PRÁCTICA -->
@@ -124,18 +125,6 @@
       </div>
     </div>
 
-    <!-- Importación de datos -->
-    <div class="card">
-      <h2>Importar Vocabulario desde Archivo</h2>
-      <small class="help-text">
-        Soporta archivos <strong>CSV</strong> (formato: <code>idioma,palabra,traduccion,intentos,categorías,nivel</code>) o exportaciones <strong>JSON</strong>.
-      </small>
-      <div class="file-drop" onclick="document.getElementById('file-input').click()">
-        <p style="margin: 0; font-weight: 500;">Haz clic aquí para seleccionar tu archivo (.csv o .json)</p>
-        <input type="file" id="file-input" accept=".csv, .json" class="hidden" onchange="handleFileUpload(event)">
-      </div>
-      <div id="import-msg" style="font-size: 14px; font-weight: bold; text-align: center;"></div>
-    </div>
   </div>
 
   <!-- VISTA 2: BROWSE / DICCIONARIO -->
@@ -240,6 +229,32 @@
     </div>
   </div>
 
+  <!-- VISTA 4: IMPORTAR / EXPORTAR -->
+  <div id="view-importexport" class="hidden">
+    <div class="card">
+      <h2>Importar Vocabulario desde Archivo</h2>
+      <small class="help-text">
+        Soporta archivos <strong>CSV</strong> (formato: <code>idioma,palabra,traduccion,intentos,categorías,nivel</code>) o exportaciones <strong>JSON</strong>.
+      </small>
+      <div class="file-drop" onclick="document.getElementById('file-input').click()">
+        <p style="margin: 0; font-weight: 500;">Haz clic aquí para seleccionar tu archivo (.csv o .json)</p>
+        <input type="file" id="file-input" accept=".csv, .json" class="hidden" onchange="handleFileUpload(event)">
+      </div>
+      <div id="import-msg" style="font-size: 14px; font-weight: bold; text-align: center;"></div>
+    </div>
+
+    <!-- Estado General -->
+    <div class="card">
+      <h2>Estado General</h2>
+      <p>Palabras pendientes: <strong id="count-pending">0</strong></p>
+      <p>Palabras recordadas: <strong id="count-remembered">0</strong></p>
+      <div class="flex">
+        <button class="alt" onclick="exportData('csv')">Exportar CSV</button>
+        <button class="alt" onclick="exportData('json')">Exportar JSON</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal para editar palabra actual -->
   <div id="edit-current-modal" class="modal">
     <div class="modal-content">
@@ -248,17 +263,6 @@
         <button class="alt sm" onclick="closeEditCurrentModal()">Cerrar</button>
       </div>
       <div class="modal-body" id="edit-current-modal-body"></div>
-    </div>
-  </div>
-
-  <!-- Estado General -->
-  <div class="card">
-    <h2>Estado General</h2>
-    <p>Palabras pendientes: <strong id="count-pending">0</strong></p>
-    <p>Palabras recordadas: <strong id="count-remembered">0</strong></p>
-    <div class="flex">
-      <button class="alt" onclick="exportData('csv')">Exportar CSV</button>
-      <button class="alt" onclick="exportData('json')">Exportar JSON</button>
     </div>
   </div>
 
@@ -432,10 +436,12 @@ Reglas de respuesta:
       document.getElementById('view-quiz').classList.add('hidden');
       document.getElementById('view-browse').classList.add('hidden');
       document.getElementById('view-stats').classList.add('hidden');
+      document.getElementById('view-importexport').classList.add('hidden');
 
       document.getElementById('tab-quiz-btn').classList.remove('active');
       document.getElementById('tab-browse-btn').classList.remove('active');
       document.getElementById('tab-stats-btn').classList.remove('active');
+      document.getElementById('tab-importexport-btn').classList.remove('active');
 
       if (tab === 'quiz') {
         document.getElementById('view-quiz').classList.remove('hidden');
@@ -449,6 +455,10 @@ Reglas de respuesta:
         document.getElementById('view-stats').classList.remove('hidden');
         document.getElementById('tab-stats-btn').classList.add('active');
         renderStatistics();
+      } else if (tab === 'importexport') {
+        document.getElementById('view-importexport').classList.remove('hidden');
+        document.getElementById('tab-importexport-btn').classList.add('active');
+        updateStats();
       }
     }
 
