@@ -340,8 +340,25 @@
       }
     }*/
     
+// Obtiene la API key de Gemini desde el almacenamiento privado (localStorage).
+// Si no existe, la pide al usuario y la guarda para futuras sesiones.
+function getGeminiApiKey() {
+  const STORAGE_KEY = 'gemini_api_key';
+  let apiKey = localStorage.getItem(STORAGE_KEY);
+  if (!apiKey) {
+    apiKey = prompt('Introduce tu API key de Gemini para sugerir categor\u00edas. Se guardar\u00e1 en el almacenamiento privado del navegador para no volver a pedirla.');
+    if (apiKey) {
+      apiKey = apiKey.trim();
+      localStorage.setItem(STORAGE_KEY, apiKey);
+    } else {
+      throw new Error('No se ha proporcionado la API key de Gemini.');
+    }
+  }
+  return apiKey;
+}
+
 async function getSuggestedCategories(spanishWord) {
-  var apiKey = "__GEMINI_API_KEY__";
+  var apiKey = getGeminiApiKey();
   var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=' + apiKey;
 
   const INSTRUCCIONES_SISTEMA = `
