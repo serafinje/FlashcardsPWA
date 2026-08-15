@@ -298,48 +298,6 @@
     }
 
     // Función para obtener categorías sugeridas usando AI
-    /*
-    async function getSuggestedCategories(spanishWord) {
-      try {
-        const API_URL = 'https://api.mistral.ai/v1/chat/completions';
-
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${MISTRAL_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: 'mistral-tiny',
-            messages: [
-              {
-                role: 'user',
-                content: `Clasifica la palabra "${spanishWord}" en 3-5 categorías temáticas en español. Responde SOLO con las categorías separadas por comas, sin texto adicional, sin puntos, sin comillas y en minúsculas. Ejemplo: comida,frutas,alimentos`
-              }
-            ],
-            temperature: 0.2,
-            max_tokens: 50
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error en la API: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        if (data.choices && data.choices[0].message.content) {
-          return data.choices[0].message.content
-            .split(',')
-            .map(c => c.trim().toLowerCase())
-            .filter(c => c.length > 0);
-        }
-        return [];
-      } catch (error) {
-        console.error('Error al obtener categorías sugeridas:', error);
-        return [];
-      }
-    }*/
-    
 // Obtiene la API key de Gemini desde el almacenamiento privado (localStorage).
 // Si no existe, la pide al usuario y la guarda para futuras sesiones.
 function getGeminiApiKey() {
