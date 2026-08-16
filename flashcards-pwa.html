@@ -39,7 +39,7 @@
     .answer-feedback svg { width: 26px; height: 26px; display: block; }
     .answer-feedback.correct { background: #dcfce7; color: #15803d; }
     .answer-feedback.incorrect { background: #fee2e2; color: #b91c1c; }
-    .file-drop { border: 2px dashed #d1d5db; border-radius: 8px; padding: 16px; text-align: center; background: #fafafa; margin-bottom: 12px; cursor: pointer; }
+    .file-drop { border: 2px dashed #d1d5db; border-radius: 8px; text-align: center; background: #fafafa; margin-bottom: 12px; cursor: pointer; padding: 16px; }
     small.help-text { color: #6b7280; display: block; margin-top: -8px; margin-bottom: 12px; line-height: 1.4; }
 
     /* Navegación */
@@ -106,7 +106,7 @@
       <div class="practice-filters">
         <div class="field">
           <label for="filter-lang">Idioma</label>
-          <select id="filter-lang" onchange="renderPractice()">
+          <select id="filter-lang" onchange="updatePracticeModeLabels(); renderPractice()">
             <option value="ALL">Todos los idiomas</option>
           </select>
         </div>
@@ -490,6 +490,26 @@ Reglas de respuesta:
       save();
     }
 
+    // Actualizar textos del select de modo de práctica según el idioma filtrado
+    function updatePracticeModeLabels() {
+      const filterLang = document.getElementById('filter-lang').value;
+      const langLabel = (filterLang && filterLang !== 'ALL') ? filterLang : 'Idioma';
+      const select = document.getElementById('practice-mode');
+      if (!select) return;
+
+      const current = select.value;
+
+      select.innerHTML = `
+        <option value="forward">${langLabel} → Español</option>
+        <option value="reverse">Español → ${langLabel}</option>
+        <option value="random">Aleatorio</option>
+      `;
+
+      if ([...select.options].some(o => o.value === current)) {
+        select.value = current;
+      }
+    }
+
     // Actualizar opciones de filtro de idioma
     function updateLanguageFilterOptions() {
       const select = document.getElementById('filter-lang');
@@ -509,6 +529,8 @@ Reglas de respuesta:
       } else {
         select.value = 'ALL';
       }
+
+      updatePracticeModeLabels();
     }
 
     // Actualizar opciones de filtro de categoría
@@ -1353,6 +1375,7 @@ Reglas de respuesta:
     updateLanguageFilterOptions();
     updateCategoryFilterOptions();
     restorePracticePrefs();
+    updatePracticeModeLabels();
     renderPractice();
     updateStats();
   </script>
