@@ -25,11 +25,20 @@
     .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 12px; font-weight: bold; background: #e5e7eb; }
     .hidden { display: none; }
     .flex { display: flex; gap: 8px; }
-    .feedback { padding: 12px; border-radius: 8px; margin-top: 12px; font-weight: bold; text-align: center; }
-    .feedback.correct { background: #dcfce7; color: #15803d; }
-    .feedback-icon { display: inline-flex; vertical-align: middle; margin-right: 6px; }
-    .feedback-icon svg { width: 18px; height: 18px; display: block; }
-    .feedback.incorrect { background: #fee2e2; color: #b91c1c; }
+    /* Filtros de práctica en una sola línea */
+    .practice-filters { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+    .practice-filters .field { flex: 1; min-width: 120px; }
+    .practice-filters label { font-size: 12px; color: #6b7280; }
+    .practice-filters select { margin-top: 2px; margin-bottom: 12px; }
+
+    /* Fila de respuesta compacta: input + botón comprobar (icono) + feedback */
+    .answer-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+    .answer-row input { flex: 1; margin: 0; }
+    .answer-row .icon-btn { flex: none; }
+    .answer-feedback { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; flex: none; }
+    .answer-feedback svg { width: 26px; height: 26px; display: block; }
+    .answer-feedback.correct { background: #dcfce7; color: #15803d; }
+    .answer-feedback.incorrect { background: #fee2e2; color: #b91c1c; }
     .file-drop { border: 2px dashed #d1d5db; border-radius: 8px; padding: 16px; text-align: center; background: #fafafa; margin-bottom: 12px; cursor: pointer; }
     small.help-text { color: #6b7280; display: block; margin-top: -8px; margin-bottom: 12px; line-height: 1.4; }
 
@@ -93,23 +102,29 @@
     <div class="card" id="practice-card">
       <h2>Práctica de Vocabulario</h2>
 
-      <!-- Filtro por idioma y categoría -->
-      <label for="filter-lang">Filtrar por Idioma:</label>
-      <select id="filter-lang" onchange="renderPractice()">
-        <option value="ALL">Todos los idiomas</option>
-      </select>
-
-      <label for="filter-category">Filtrar por Categoría:</label>
-      <select id="filter-category" onchange="renderPractice()">
-        <option value="ALL">Todas las categorías</option>
-      </select>
-
-      <label for="practice-mode">Modo de práctica:</label>
-      <select id="practice-mode" onchange="savePracticeMode(); renderPractice()">
-        <option value="forward">Idioma → Español</option>
-        <option value="reverse">Español → Idioma</option>
-        <option value="random">Aleatorio</option>
-      </select>
+      <!-- Filtro por idioma, categoría y modo de práctica en una línea -->
+      <div class="practice-filters">
+        <div class="field">
+          <label for="filter-lang">Idioma</label>
+          <select id="filter-lang" onchange="renderPractice()">
+            <option value="ALL">Todos los idiomas</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="filter-category">Categoría</label>
+          <select id="filter-category" onchange="renderPractice()">
+            <option value="ALL">Todas las categorías</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="practice-mode">Modo</label>
+          <select id="practice-mode" onchange="savePracticeMode(); renderPractice()">
+            <option value="forward">Idioma → Español</option>
+            <option value="reverse">Español → Idioma</option>
+            <option value="random">Aleatorio</option>
+          </select>
+        </div>
+      </div>
 
       <div id="quiz-area">
         <span class="badge" id="lang-badge">-</span>
@@ -120,17 +135,18 @@
         <h1 id="word-display" style="font-size: 2rem; text-align: center; margin: 20px 0;">Cargando...</h1>
 
         <form id="answer-form" onsubmit="checkAnswer(event)">
-          <label for="user-input">Escribe la respuesta:</label>
-          <input type="text" id="user-input" placeholder="Tu respuesta..." autocomplete="off" required>
-          <button type="submit" id="submit-btn">Comprobar</button>
+          <div class="answer-row">
+            <input type="text" id="user-input" placeholder="Tu respuesta..." autocomplete="off" required>
+            <button type="submit" id="submit-btn" class="success icon-btn" title="Comprobar" aria-label="Comprobar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></button>
+            <span id="answer-feedback" class="answer-feedback hidden"></span>
+          </div>
         </form>
 
         <div id="feedback-area" class="hidden">
-          <div id="feedback-message" class="feedback"></div>
-          <p style="text-align: center; color: #4b5563; margin-top: 8px;">
+          <p style="text-align: center; color: #4b5563; margin-top: 12px;">
             Respuesta correcta: <strong id="correct-translation"></strong>
           </p>
-          <div class="icon-row">
+          <div class="icon-row" style="margin-top: 8px;">
             <button class="alt icon-btn" title="Editar palabra" aria-label="Editar palabra" onclick="openEditCurrentModal()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
             </button>
@@ -138,7 +154,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
             </button>
             <span class="spacer"></span>
-            <button class="primary" onclick="renderPractice()">Siguiente palabra</button>
+            <button class="primary icon-btn" title="Siguiente palabra" aria-label="Siguiente palabra" onclick="renderPractice()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
           </div>
         </div>
       </div>
@@ -608,8 +624,13 @@ Reglas de respuesta:
         return;
       }
 
-      const modeText = currentWord.isReverseMode ? 'Español → Idioma' : 'Idioma → Español';
+      const filterLang = document.getElementById('filter-lang').value;
+      const langLabel = (filterLang && filterLang !== 'ALL') ? filterLang : 'Idioma';
+      const modeText = currentWord.isReverseMode ? `Español → ${langLabel}` : `${langLabel} → Español`;
       const labelText = currentWord.isReverseMode ? `Palabra en ${currentWord.language}` : 'Traducción';
+
+      const checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+      const nextIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
 
       area.innerHTML = `
         <span class="badge" id="lang-badge">${currentWord.language}</span>
@@ -620,17 +641,18 @@ Reglas de respuesta:
         <h1 id="word-display" style="font-size: 2rem; text-align: center; margin: 20px 0;">${currentWord.displayText}</h1>
 
         <form id="answer-form" onsubmit="checkAnswer(event)">
-          <label for="user-input">Escribe la ${labelText}:</label>
-          <input type="text" id="user-input" placeholder="Tu respuesta..." autocomplete="off" required>
-          <button type="submit" id="submit-btn">Comprobar</button>
+          <div class="answer-row">
+            <input type="text" id="user-input" placeholder="Escribe la ${labelText}..." autocomplete="off" required>
+            <button type="submit" id="submit-btn" class="success icon-btn" title="Comprobar" aria-label="Comprobar">${checkIcon}</button>
+            <span id="answer-feedback" class="answer-feedback hidden"></span>
+          </div>
         </form>
 
         <div id="feedback-area" class="hidden">
-          <div id="feedback-message" class="feedback"></div>
-          <p style="text-align: center; color: #4b5563; margin-top: 8px;">
+          <p style="text-align: center; color: #4b5563; margin-top: 12px;">
             Respuesta correcta: <strong id="correct-translation"></strong>
           </p>
-          <div class="icon-row">
+          <div class="icon-row" style="margin-top: 8px;">
             <button class="alt icon-btn" title="Editar palabra" aria-label="Editar palabra" onclick="openEditCurrentModal()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
             </button>
@@ -638,7 +660,7 @@ Reglas de respuesta:
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
             </button>
             <span class="spacer"></span>
-            <button class="primary" onclick="renderPractice()">Siguiente palabra</button>
+            <button class="primary icon-btn" title="Siguiente palabra" aria-label="Siguiente palabra" onclick="renderPractice()">${nextIcon}</button>
           </div>
         </div>
       `;
@@ -687,12 +709,11 @@ Reglas de respuesta:
       document.getElementById('user-input').disabled = true;
       document.getElementById('submit-btn').classList.add('hidden');
 
-      const feedbackMessage = document.getElementById('feedback-message');
-      feedbackMessage.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-      const feedbackIcon = isCorrect
+      const answerFeedback = document.getElementById('answer-feedback');
+      answerFeedback.className = `answer-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+      answerFeedback.innerHTML = isCorrect
         ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
         : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-      feedbackMessage.innerHTML = `<span class="feedback-icon">${feedbackIcon}</span> ${isCorrect ? '¡Correcto! (-1 intento)' : 'Incorrecto (+1 intento)'}`;
 
       document.getElementById('correct-translation').innerText = currentWord.expectedAnswer;
       feedbackArea.classList.remove('hidden');
