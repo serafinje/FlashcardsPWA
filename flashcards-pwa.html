@@ -26,62 +26,41 @@
     .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 12px; font-weight: bold; background: #e5e7eb; }
     .hidden { display: none; }
     .flex { display: flex; gap: 8px; }
-    /* Filtros de práctica en una sola línea */
     .practice-filters { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
     .practice-filters .field { flex: 1; min-width: 120px; }
     .practice-filters label { font-size: 12px; color: #6b7280; }
     .practice-filters select { margin-top: 2px; margin-bottom: 12px; }
-
-    /* Fila de respuesta compacta: input + botón comprobar (icono) + feedback */
     .answer-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
     .answer-row input { flex: 1; margin: 0; }
-    .answer-row .icon-btn { flex: none; }
-    .answer-feedback { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; flex: none; }
-    .answer-feedback svg { width: 26px; height: 26px; display: block; }
-    .answer-feedback.correct { background: #dcfce7; color: #15803d; }
-    .answer-feedback.incorrect { background: #fee2e2; color: #b91c1c; }
+    .answer-row .action-btn { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; margin-top: 0; border-radius: 8px; font-size: 1.5rem; line-height: 1; font-weight: bold; }
+    .answer-row .action-btn.correct { background: #16a34a; color: white; }
+    .answer-row .action-btn.incorrect { background: #dc2626; color: white; }
     .file-drop { border: 2px dashed #d1d5db; border-radius: 8px; text-align: center; background: #fafafa; margin-bottom: 12px; cursor: pointer; padding: 16px; }
     small.help-text { color: #6b7280; display: block; margin-top: -8px; margin-bottom: 12px; line-height: 1.4; }
-
-    /* Navegación */
     .tab-bar { display: flex; gap: 8px; margin-bottom: 16px; }
     .tab-btn { flex: 1; background: #e5e7eb; color: #374151; font-size: 14px; padding: 12px 8px; text-align: center; }
     .tab-btn.active { background: var(--primary); color: white; }
-
-    /* Lista modo Browse */
     .word-list { list-style: none; padding: 0; margin: 0; }
     .word-item { border-bottom: 1px solid #e5e7eb; padding: 12px 0; display: flex; justify-content: space-between; align-items: center; }
     .word-item:last-child { border-bottom: none; }
     .word-info { flex: 1; }
     .word-title { font-weight: bold; font-size: 16px; }
     .word-sub { font-size: 13px; color: #6b7280; }
-
-    /* Estadísticas */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px; }
     .stat-card { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
     .stat-value { font-size: 2rem; font-weight: bold; color: var(--primary); }
     .stat-label { font-size: 14px; color: #6b7280; }
-
-    /* Gráficos */
     .chart-container { position: relative; height: 300px; margin-bottom: 20px; }
-
-    /* Tags de categorías */
     .tag { display: inline-block; background: #e0e7ff; color: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 12px; margin: 2px; cursor: pointer; }
     .tag:hover { background: #c7d2fe; }
-
-    /* Modal */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
     .modal-content { background: white; margin: 20px auto; padding: 20px; border-radius: 12px; max-width: 500px; width: 90%; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .modal-body { margin-bottom: 16px; }
-
-    /* Botones de icono */
     button.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; margin-top: 0; border-radius: 8px; }
     button.icon-btn svg { width: 20px; height: 20px; display: block; }
     .icon-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .icon-row .spacer { flex: 1; }
-
-    /* Campo de categorías con botón de sugerencias */
     .categories-container { display: flex; gap: 8px; margin-bottom: 12px; }
     .categories-container input { flex: 1; }
     .suggest-btn { background: #8b5cf6; }
@@ -90,7 +69,6 @@
 </head>
 <body>
 
-  <!-- Navegación por pestañas -->
   <div class="tab-bar">
     <button class="tab-btn active" id="tab-quiz-btn" onclick="switchTab('quiz')">Práctica</button>
     <button class="tab-btn" id="tab-browse-btn" onclick="switchTab('browse')">Diccionario</button>
@@ -98,12 +76,9 @@
     <button class="tab-btn" id="tab-importexport-btn" onclick="switchTab('importexport')">Importar/Exportar</button>
   </div>
 
-  <!-- VISTA 1: PRÁCTICA -->
   <div id="view-quiz">
     <div class="card" id="practice-card">
       <h2>Práctica de Vocabulario</h2>
-
-      <!-- Filtro por idioma, categoría y modo de práctica en una línea -->
       <div class="practice-filters">
         <div class="field">
           <label for="filter-lang">Idioma</label>
@@ -126,7 +101,6 @@
           </select>
         </div>
       </div>
-
       <div id="quiz-area">
         <span class="badge" id="lang-badge">-</span>
         <span class="badge" id="category-badge">-</span>
@@ -134,15 +108,12 @@
         <span class="badge" id="level-badge">Nivel: -</span>
         <span class="badge" id="mode-badge">-</span>
         <h1 id="word-display" style="font-size: 2rem; text-align: center; margin: 20px 0;">Cargando...</h1>
-
         <form id="answer-form" onsubmit="checkAnswer(event)">
           <div class="answer-row">
             <input type="text" id="user-input" placeholder="Tu respuesta..." autocomplete="off" required>
-            <button type="submit" id="submit-btn" class="success icon-btn" title="Comprobar" aria-label="Comprobar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></button>
-            <span id="answer-feedback" class="answer-feedback hidden"></span>
+            <button type="submit" id="action-btn" class="action-btn" style="background: var(--primary); color: white;" title="Comprobar" aria-label="Comprobar">→</button>
           </div>
         </form>
-
         <div id="feedback-area" class="hidden">
           <p style="text-align: center; color: #4b5563; margin-top: 12px;">
             Respuesta correcta: <strong id="correct-translation"></strong>
@@ -154,16 +125,12 @@
             <button class="danger icon-btn" title="Borrar palabra" aria-label="Borrar palabra" onclick="deleteCurrentWord()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
             </button>
-            <span class="spacer"></span>
-            <button class="primary icon-btn" title="Siguiente palabra" aria-label="Siguiente palabra" onclick="renderPractice()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 
-  <!-- VISTA 2: BROWSE / DICCIONARIO -->
   <div id="view-browse" class="hidden">
     <div class="card">
       <h2>Añadir o Editar Palabra</h2>
@@ -177,25 +144,19 @@
         <input type="text" id="edit-trans" placeholder="Ej: Manzana" required>
         <label>Intentos restantes:</label>
         <input type="number" id="edit-attempts" value="3" min="0" required>
-
         <label>Categorías (separadas por comas):</label>
         <div class="categories-container">
           <input type="text" id="edit-categories" placeholder="Ej: comida, frutas, vocabulario básico">
-          <button type="button" class="suggest-btn sm" onclick="suggestCategories()" id="suggest-categories-btn">
-            💡 Sugerir
-          </button>
+          <button type="button" class="suggest-btn sm" onclick="suggestCategories()" id="suggest-categories-btn">💡 Sugerir</button>
         </div>
-
         <label>Nivel de dominio (0-5):</label>
         <input type="number" id="edit-level" value="0" min="0" max="5" required>
-
         <div class="flex">
           <button type="submit" id="btn-save-word">Guardar Palabra</button>
           <button type="button" class="alt hidden" id="btn-cancel-edit" onclick="resetEditorForm()">Cancelar Edición</button>
         </div>
       </form>
     </div>
-
     <div class="card">
       <h2>Listado de Palabras (<span id="total-words-count">0</span>)</h2>
       <input type="text" id="browse-search" placeholder="Buscar por palabra o traducción..." oninput="renderBrowseList()">
@@ -209,77 +170,33 @@
     </div>
   </div>
 
-  <!-- VISTA 3: ESTADÍSTICAS -->
   <div id="view-stats" class="hidden">
     <div class="card">
       <h2>📊 Estadísticas Generales</h2>
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" id="stat-total-words">0</div>
-          <div class="stat-label">Palabras totales</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="stat-remembered">0</div>
-          <div class="stat-label">Palabras aprendidas</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="stat-pending">0</div>
-          <div class="stat-label">Pendientes</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="stat-avg-level">0</div>
-          <div class="stat-label">Nivel promedio</div>
-        </div>
+        <div class="stat-card"><div class="stat-value" id="stat-total-words">0</div><div class="stat-label">Palabras totales</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-remembered">0</div><div class="stat-label">Palabras aprendidas</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-pending">0</div><div class="stat-label">Pendientes</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-avg-level">0</div><div class="stat-label">Nivel promedio</div></div>
       </div>
     </div>
-
-    <div class="card">
-      <h2>📈 Progreso por Categoría</h2>
-      <div class="chart-container">
-        <canvas id="categoryChart"></canvas>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>📉 Palabras más difíciles</h2>
-      <div class="chart-container">
-        <canvas id="difficultWordsChart"></canvas>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>📅 Actividad reciente</h2>
-      <div class="chart-container">
-        <canvas id="activityChart"></canvas>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>🏆 Top Categorías</h2>
-      <div id="top-categories-list"></div>
-    </div>
-
-    <div class="card">
-      <h2>🔄 Palabras por repasar pronto</h2>
-      <div id="upcoming-review-list"></div>
-    </div>
+    <div class="card"><h2>📈 Progreso por Categoría</h2><div class="chart-container"><canvas id="categoryChart"></canvas></div></div>
+    <div class="card"><h2>📉 Palabras más difíciles</h2><div class="chart-container"><canvas id="difficultWordsChart"></canvas></div></div>
+    <div class="card"><h2>📅 Actividad reciente</h2><div class="chart-container"><canvas id="activityChart"></canvas></div></div>
+    <div class="card"><h2>🏆 Top Categorías</h2><div id="top-categories-list"></div></div>
+    <div class="card"><h2>🔄 Palabras por repasar pronto</h2><div id="upcoming-review-list"></div></div>
   </div>
 
-  <!-- VISTA 4: IMPORTAR / EXPORTAR -->
   <div id="view-importexport" class="hidden">
     <div class="card">
       <h2>Importar Vocabulario desde Archivo</h2>
-      <small class="help-text">
-        Soporta archivos <strong>CSV</strong> (formato: <code>idioma,palabra,traduccion,intentos,categorías,nivel</code>) o exportaciones <strong>JSON</strong>.
-      </small>
+      <small class="help-text">Soporta archivos <strong>CSV</strong> (formato: <code>idioma,palabra,traduccion,intentos,categorías,nivel</code>) o exportaciones <strong>JSON</strong>.</small>
       <div class="file-drop" onclick="document.getElementById('file-input').click()">
         <p style="margin: 0; font-weight: 500;">Haz clic aquí para seleccionar tu archivo (.csv o .json)</p>
         <input type="file" id="file-input" accept=".csv, .json" class="hidden" onchange="handleFileUpload(event)">
       </div>
       <div id="import-msg" style="font-size: 14px; font-weight: bold; text-align: center;"></div>
     </div>
-
-    <!-- Estado General -->
     <div class="card">
       <h2>Estado General</h2>
       <p>Palabras pendientes: <strong id="count-pending">0</strong></p>
@@ -291,7 +208,6 @@
     </div>
   </div>
 
-  <!-- Modal para editar palabra actual -->
   <div id="edit-current-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -303,39 +219,23 @@
   </div>
 
   <script>
-    // Configuración de repetición espaciada
-    const SPACED_REPETITION_INTERVALS = [1, 3, 7, 15, 30, 90]; // Días para cada nivel (0-5)
+    const SPACED_REPETITION_INTERVALS = [1, 3, 7, 15, 30, 90];
     const DAYS_TO_EXPIRATION = 30;
-
-    // Reemplaza con tu clave API de Mistral
-    const MISTRAL_API_KEY = 'TU_CLAVE_API_MISTRAL'; // 🔑 CAMBIA ESTO POR TU CLAVE
-
+    const MISTRAL_API_KEY = 'TU_CLAVE_API_MISTRAL';
     let words = JSON.parse(localStorage.getItem('vocab_app_data')) || [];
     let currentWord = null;
     let charts = {};
 
-    // Inicializar palabras existentes con nuevos campos
     function initializeWords() {
       words.forEach(word => {
-        if (word.categories === undefined) {
-          word.categories = [];
-        }
-        if (word.level === undefined) {
-          word.level = 0;
-        }
-        if (word.lastPractice === undefined) {
-          word.lastPractice = null;
-        }
-        if (word.nextReview === undefined) {
-          word.nextReview = null;
-        }
+        if (word.categories === undefined) word.categories = [];
+        if (word.level === undefined) word.level = 0;
+        if (word.lastPractice === undefined) word.lastPractice = null;
+        if (word.nextReview === undefined) word.nextReview = null;
       });
       save();
     }
 
-    // Función para obtener categorías sugeridas usando AI
-// Obtiene la API key de Gemini desde el almacenamiento privado (localStorage).
-// Si no existe, la pide al usuario y la guarda para futuras sesiones.
 function getGeminiApiKey() {
   const STORAGE_KEY = 'gemini_api_key';
   let apiKey = localStorage.getItem(STORAGE_KEY);
@@ -354,76 +254,35 @@ function getGeminiApiKey() {
 async function getSuggestedCategories(spanishWord) {
   var apiKey = getGeminiApiKey();
   var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=' + apiKey;
-
-  const INSTRUCCIONES_SISTEMA = `
-Actúa como un clasificador de vocabulario para una aplicación de tarjetas (flashcards).
-Tu única tarea es proponer categorías temáticas en español para la palabra recibida.
-
-Reglas de respuesta:
-- Devuelve únicamente de 3 a 5 categorías separadas por comas.
-- Usa letras minúsculas y no incluyas puntos, texto adicional ni formato Markdown.
-`;
-
-  // Uso de Template Literals con comillas invertidas `` y el nombre correcto del parámetro
+  const INSTRUCCIONES_SISTEMA = `\nActúa como un clasificador de vocabulario para una aplicación de tarjetas (flashcards).\nTu única tarea es proponer categorías temáticas en español para la palabra recibida.\n\nReglas de respuesta:\n- Devuelve únicamente de 3 a 5 categorías separadas por comas.\n- Usa letras minúsculas y no incluyas puntos, texto adicional ni formato Markdown.\n`;
   var prompt = `Clasifica la palabra "${spanishWord}" en 3-5 categorías temáticas en español. Ejemplo: comida, frutas, alimentos`;
-
   var payload = {
-    "system_instruction": {
-      "parts": [{
-        "text": INSTRUCCIONES_SISTEMA
-      }]
-    },
-    "contents": [{
-      "parts": [{
-        "text": prompt
-      }]
-    }]
+    "system_instruction": { "parts": [{ "text": INSTRUCCIONES_SISTEMA }] },
+    "contents": [{ "parts": [{ "text": prompt }] }]
   };
-
-  // Petición nativa con fetch() para el navegador
   var respuesta = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
-
-  if (!respuesta.ok) {
-    throw new Error('Error en la API de Gemini');
-  }
-
+  if (!respuesta.ok) throw new Error('Error en la API de Gemini');
   var json = await respuesta.json();
   var rawText = json.candidates[0].content.parts[0].text;
-
-  // Convertimos el texto separado por comas en un Array limpio
   return rawText.split(',').map(cat => cat.trim()).filter(Boolean);
 }
 
-
-    // Función para sugerir categorías
     async function suggestCategories() {
       const spanishWord = document.getElementById('edit-trans').value.trim();
-      if (!spanishWord) {
-        alert('Por favor, introduce primero la traducción en español.');
-        return;
-      }
-
+      if (!spanishWord) { alert('Por favor, introduce primero la traducción en español.'); return; }
       const categoriesInput = document.getElementById('edit-categories');
       const suggestBtn = document.getElementById('suggest-categories-btn');
-
       categoriesInput.disabled = true;
       suggestBtn.disabled = true;
       suggestBtn.innerHTML = '⏳ Cargando...';
-
       try {
         const categories = await getSuggestedCategories(spanishWord);
-        if (categories.length > 0) {
-          categoriesInput.value = categories.join(', ');
-        } else {
-          categoriesInput.value = '';
-          alert('No se pudieron obtener sugerencias. Inténtalo de nuevo.');
-        }
+        if (categories.length > 0) categoriesInput.value = categories.join(', ');
+        else { categoriesInput.value = ''; alert('No se pudieron obtener sugerencias. Inténtalo de nuevo.'); }
       } catch (error) {
         categoriesInput.value = '';
         alert('Error al conectar con el servicio de sugerencias. Revisa la consola para más detalles.');
@@ -434,7 +293,6 @@ Reglas de respuesta:
       }
     }
 
-    // Guardar datos
     function save() {
       localStorage.setItem('vocab_app_data', JSON.stringify(words));
       updateLanguageFilterOptions();
@@ -442,18 +300,15 @@ Reglas de respuesta:
       updateStats();
     }
 
-    // Cambiar entre pestañas
     function switchTab(tab) {
       document.getElementById('view-quiz').classList.add('hidden');
       document.getElementById('view-browse').classList.add('hidden');
       document.getElementById('view-stats').classList.add('hidden');
       document.getElementById('view-importexport').classList.add('hidden');
-
       document.getElementById('tab-quiz-btn').classList.remove('active');
       document.getElementById('tab-browse-btn').classList.remove('active');
       document.getElementById('tab-stats-btn').classList.remove('active');
       document.getElementById('tab-importexport-btn').classList.remove('active');
-
       if (tab === 'quiz') {
         document.getElementById('view-quiz').classList.remove('hidden');
         document.getElementById('tab-quiz-btn').classList.add('active');
@@ -473,7 +328,6 @@ Reglas de respuesta:
       }
     }
 
-    // Verificar caducidad de palabras aprendidas
     function checkExpirations() {
       const now = new Date();
       words.forEach(w => {
@@ -491,31 +345,23 @@ Reglas de respuesta:
       save();
     }
 
-    // Actualizar textos del select de modo de práctica según el idioma filtrado
     function updatePracticeModeLabels() {
       const filterLang = document.getElementById('filter-lang').value;
       const langLabel = (filterLang && filterLang !== 'ALL') ? filterLang : 'Idioma';
       const select = document.getElementById('practice-mode');
       if (!select) return;
-
       const current = select.value;
-
       select.innerHTML = `
         <option value="forward">${langLabel} → Español</option>
         <option value="reverse">Español → ${langLabel}</option>
         <option value="random">Aleatorio</option>
       `;
-
-      if ([...select.options].some(o => o.value === current)) {
-        select.value = current;
-      }
+      if ([...select.options].some(o => o.value === current)) select.value = current;
     }
 
-    // Actualizar opciones de filtro de idioma
     function updateLanguageFilterOptions() {
       const select = document.getElementById('filter-lang');
       const currentValue = select.value;
-
       const languages = [...new Set(words.map(w => w.language))].filter(Boolean);
       select.innerHTML = '<option value="ALL">Todos los idiomas</option>';
       languages.forEach(lang => {
@@ -524,45 +370,27 @@ Reglas de respuesta:
         opt.innerText = lang;
         select.appendChild(opt);
       });
-
-      if (languages.includes(currentValue)) {
-        select.value = currentValue;
-      } else {
-        select.value = 'ALL';
-      }
-
+      if (languages.includes(currentValue)) select.value = currentValue;
+      else select.value = 'ALL';
       updatePracticeModeLabels();
     }
 
-    // Actualizar opciones de filtro de categoría
     function updateCategoryFilterOptions() {
       const selectQuiz = document.getElementById('filter-category');
       const selectBrowse = document.getElementById('browse-category-filter');
       const currentValueQuiz = selectQuiz.value;
       const currentValueBrowse = selectBrowse.value;
-
       const allCategories = [...new Set(words.flatMap(w => w.categories || []))].filter(c => c.trim() !== '');
-
       const options = '<option value="ALL">Todas las categorías</option>' +
         allCategories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
-
       selectQuiz.innerHTML = options;
       selectBrowse.innerHTML = options;
-
-      if (allCategories.includes(currentValueQuiz)) {
-        selectQuiz.value = currentValueQuiz;
-      } else {
-        selectQuiz.value = 'ALL';
-      }
-
-      if (allCategories.includes(currentValueBrowse)) {
-        selectBrowse.value = currentValueBrowse;
-      } else {
-        selectBrowse.value = 'ALL';
-      }
+      if (allCategories.includes(currentValueQuiz)) selectQuiz.value = currentValueQuiz;
+      else selectQuiz.value = 'ALL';
+      if (allCategories.includes(currentValueBrowse)) selectBrowse.value = currentValueBrowse;
+      else selectBrowse.value = 'ALL';
     }
 
-    // Calcular próximo repaso basado en el nivel
     function calculateNextReview(level) {
       const now = new Date();
       const days = SPACED_REPETITION_INTERVALS[level] || SPACED_REPETITION_INTERVALS[0];
@@ -570,55 +398,30 @@ Reglas de respuesta:
       return now.toISOString();
     }
 
-    // Obtener la siguiente palabra para practicar
     function getNextWord() {
       checkExpirations();
       const selectedLang = document.getElementById('filter-lang').value;
       const selectedCategory = document.getElementById('filter-category').value;
       const practiceMode = document.getElementById('practice-mode').value;
-
       let pending = words.filter(w => !w.remembered);
-
-      if (selectedLang !== 'ALL') {
-        pending = pending.filter(w => w.language === selectedLang);
-      }
-
-      if (selectedCategory !== 'ALL') {
-        pending = pending.filter(w => w.categories && w.categories.includes(selectedCategory));
-      }
-
-      // Si no hay palabras pendientes, mostrar palabras para repasar
+      if (selectedLang !== 'ALL') pending = pending.filter(w => w.language === selectedLang);
+      if (selectedCategory !== 'ALL') pending = pending.filter(w => w.categories && w.categories.includes(selectedCategory));
       if (pending.length === 0) {
         const now = new Date();
         const wordsToReview = words.filter(w => {
           if (!w.nextReview) return false;
-          const nextReviewDate = new Date(w.nextReview);
-          return nextReviewDate <= now;
+          return new Date(w.nextReview) <= now;
         });
-        if (wordsToReview.length > 0) {
-          pending = wordsToReview;
-        }
+        if (wordsToReview.length > 0) pending = wordsToReview;
       }
-
       if (pending.length === 0) return null;
-
-      // Priorizar palabras con nivel más bajo y próximo repaso
       pending.sort((a, b) => {
         if (a.level !== b.level) return a.level - b.level;
-        if (a.nextReview && b.nextReview) {
-          const aDate = new Date(a.nextReview);
-          const bDate = new Date(b.nextReview);
-          return aDate - bDate;
-        }
+        if (a.nextReview && b.nextReview) return new Date(a.nextReview) - new Date(b.nextReview);
         return b.attempts - a.attempts;
       });
-
-      // Selección aleatoria entre las 5 primeras
       const topCandidates = pending.slice(0, 5);
-      const randomIndex = Math.floor(Math.random() * topCandidates.length);
-      const selectedWord = topCandidates[randomIndex];
-
-      // Determinar qué mostrar según el modo de práctica
+      const selectedWord = topCandidates[Math.floor(Math.random() * topCandidates.length)];
       if (practiceMode === 'reverse') {
         selectedWord.displayText = selectedWord.translation;
         selectedWord.expectedAnswer = selectedWord.word;
@@ -633,28 +436,20 @@ Reglas de respuesta:
         selectedWord.expectedAnswer = selectedWord.translation;
         selectedWord.isReverseMode = false;
       }
-
       return selectedWord;
     }
 
-    // Renderizar la práctica
     function renderPractice() {
       currentWord = getNextWord();
       const area = document.getElementById('quiz-area');
-
       if (!currentWord) {
         area.innerHTML = '<p style="text-align:center;">¡No hay palabras pendientes para el filtro seleccionado!</p>';
         return;
       }
-
       const filterLang = document.getElementById('filter-lang').value;
       const langLabel = (filterLang && filterLang !== 'ALL') ? filterLang : 'Idioma';
       const modeText = currentWord.isReverseMode ? `Español → ${langLabel}` : `${langLabel} → Español`;
       const labelText = currentWord.isReverseMode ? `Palabra en ${currentWord.language}` : 'Traducción';
-
-      const checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
-      const nextIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-
       area.innerHTML = `
         <span class="badge" id="lang-badge">${currentWord.language}</span>
         <span class="badge" id="category-badge">${currentWord.categories ? currentWord.categories.join(', ') : '-'}</span>
@@ -662,15 +457,12 @@ Reglas de respuesta:
         <span class="badge" id="level-badge">Nivel: ${currentWord.level}</span>
         <span class="badge" id="mode-badge">${modeText}</span>
         <h1 id="word-display" style="font-size: 2rem; text-align: center; margin: 20px 0;">${currentWord.displayText}</h1>
-
         <form id="answer-form" onsubmit="checkAnswer(event)">
           <div class="answer-row">
             <input type="text" id="user-input" placeholder="Escribe la ${labelText}..." autocomplete="off" required>
-            <button type="submit" id="submit-btn" class="success icon-btn" title="Comprobar" aria-label="Comprobar">${checkIcon}</button>
-            <span id="answer-feedback" class="answer-feedback hidden"></span>
+            <button type="submit" id="action-btn" class="action-btn" style="background: var(--primary); color: white;" title="Comprobar" aria-label="Comprobar">→</button>
           </div>
         </form>
-
         <div id="feedback-area" class="hidden">
           <p style="text-align: center; color: #4b5563; margin-top: 12px;">
             Respuesta correcta: <strong id="correct-translation"></strong>
@@ -682,33 +474,24 @@ Reglas de respuesta:
             <button class="danger icon-btn" title="Borrar palabra" aria-label="Borrar palabra" onclick="deleteCurrentWord()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
             </button>
-            <span class="spacer"></span>
-            <button class="primary icon-btn" title="Siguiente palabra" aria-label="Siguiente palabra" onclick="renderPractice()">${nextIcon}</button>
           </div>
         </div>
       `;
-
       const input = document.getElementById('user-input');
       setTimeout(() => input && input.focus(), 100);
     }
 
-    // Verificar respuesta
     function checkAnswer(e) {
       e.preventDefault();
-
       const feedbackArea = document.getElementById('feedback-area');
       if (feedbackArea && !feedbackArea.classList.contains('hidden')) {
         renderPractice();
         return;
       }
-
       if (!currentWord) return;
-
       const userInput = document.getElementById('user-input').value.trim().toLowerCase();
       const expected = currentWord.expectedAnswer.trim().toLowerCase();
       const isCorrect = userInput === expected;
-
-      // Actualizar nivel y intentos
       if (isCorrect) {
         currentWord.attempts--;
         if (currentWord.attempts <= 0) {
@@ -723,32 +506,24 @@ Reglas de respuesta:
         currentWord.attempts++;
         currentWord.level = Math.max(0, currentWord.level - 1);
       }
-
       currentWord.lastPractice = new Date().toISOString();
       currentWord.nextReview = calculateNextReview(currentWord.level);
-
       save();
-
       document.getElementById('user-input').disabled = true;
-      document.getElementById('submit-btn').classList.add('hidden');
-
-      const answerFeedback = document.getElementById('answer-feedback');
-      answerFeedback.className = `answer-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-      answerFeedback.innerHTML = isCorrect
-        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
-        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-
+      const actionBtn = document.getElementById('action-btn');
+      actionBtn.className = `action-btn ${isCorrect ? 'correct' : 'incorrect'}`;
+      actionBtn.style.background = '';
+      actionBtn.textContent = isCorrect ? '✓' : '✕';
+      actionBtn.title = 'Siguiente palabra';
+      actionBtn.setAttribute('aria-label', 'Siguiente palabra');
       document.getElementById('correct-translation').innerText = currentWord.expectedAnswer;
       feedbackArea.classList.remove('hidden');
     }
 
-    // Abrir modal para editar la palabra actual
     function openEditCurrentModal() {
       if (!currentWord) return;
-
       const modal = document.getElementById('edit-current-modal');
       const modalBody = document.getElementById('edit-current-modal-body');
-
       modalBody.innerHTML = `
         <form onsubmit="saveEditCurrentModal(event)">
           <input type="hidden" id="modal-edit-id" value="${currentWord.id}">
@@ -760,15 +535,11 @@ Reglas de respuesta:
           <input type="text" id="modal-edit-trans" value="${currentWord.translation || ''}" required>
           <label>Intentos restantes:</label>
           <input type="number" id="modal-edit-attempts" value="${currentWord.attempts || 0}" min="0" required>
-
           <label>Categorías (separadas por comas):</label>
           <div class="categories-container">
             <input type="text" id="modal-edit-categories" value="${(currentWord.categories || []).join(', ')}">
-            <button type="button" class="suggest-btn sm" onclick="suggestCategoriesModal()">
-              💡 Sugerir
-            </button>
+            <button type="button" class="suggest-btn sm" onclick="suggestCategoriesModal()">💡 Sugerir</button>
           </div>
-
           <label>Nivel de dominio (0-5):</label>
           <input type="number" id="modal-edit-level" value="${currentWord.level || 0}" min="0" max="5" required>
           <div class="flex" style="margin-top: 16px;">
@@ -777,30 +548,19 @@ Reglas de respuesta:
           </div>
         </form>
       `;
-
       modal.style.display = 'block';
     }
 
-    // Función para sugerir categorías en el modal
     async function suggestCategoriesModal() {
       const spanishWord = document.getElementById('modal-edit-trans').value.trim();
-      if (!spanishWord) {
-        alert('Por favor, introduce primero la traducción en español.');
-        return;
-      }
-
+      if (!spanishWord) { alert('Por favor, introduce primero la traducción en español.'); return; }
       const categoriesInput = document.getElementById('modal-edit-categories');
       categoriesInput.disabled = true;
       categoriesInput.value = 'Cargando sugerencias...';
-
       try {
         const categories = await getSuggestedCategories(spanishWord);
-        if (categories.length > 0) {
-          categoriesInput.value = categories.join(', ');
-        } else {
-          categoriesInput.value = '';
-          alert('No se pudieron obtener sugerencias. Inténtalo de nuevo.');
-        }
+        if (categories.length > 0) categoriesInput.value = categories.join(', ');
+        else { categoriesInput.value = ''; alert('No se pudieron obtener sugerencias. Inténtalo de nuevo.'); }
       } catch (error) {
         categoriesInput.value = '';
         alert('Error al conectar con el servicio de sugerencias.');
@@ -809,42 +569,31 @@ Reglas de respuesta:
       }
     }
 
-    // Guardar cambios del modal
     function saveEditCurrentModal(e) {
       e.preventDefault();
       const id = parseFloat(document.getElementById('modal-edit-id').value);
       const wordIndex = words.findIndex(w => w.id === id);
-
       if (wordIndex !== -1) {
         words[wordIndex].language = document.getElementById('modal-edit-lang').value;
         words[wordIndex].word = document.getElementById('modal-edit-word').value;
         words[wordIndex].translation = document.getElementById('modal-edit-trans').value;
         words[wordIndex].attempts = parseInt(document.getElementById('modal-edit-attempts').value);
-        words[wordIndex].categories = document.getElementById('modal-edit-categories').value
-          .split(',')
-          .map(c => c.trim())
-          .filter(c => c !== '');
+        words[wordIndex].categories = document.getElementById('modal-edit-categories').value.split(',').map(c => c.trim()).filter(c => c !== '');
         words[wordIndex].level = parseInt(document.getElementById('modal-edit-level').value);
-
         words[wordIndex].remembered = words[wordIndex].attempts === 0;
-        if (words[wordIndex].remembered && !words[wordIndex].learnedDate) {
-          words[wordIndex].learnedDate = new Date().toISOString();
-        }
+        if (words[wordIndex].remembered && !words[wordIndex].learnedDate) words[wordIndex].learnedDate = new Date().toISOString();
         words[wordIndex].lastPractice = new Date().toISOString();
         words[wordIndex].nextReview = calculateNextReview(words[wordIndex].level);
-
         save();
         closeEditCurrentModal();
         renderPractice();
       }
     }
 
-    // Cerrar modal
     function closeEditCurrentModal() {
       document.getElementById('edit-current-modal').style.display = 'none';
     }
 
-    // Borrar la palabra en pantalla de práctica y avanzar a la siguiente
     function deleteCurrentWord() {
       if (!currentWord) return;
       if (confirm('¿Seguro que deseas eliminar esta palabra?')) {
@@ -855,12 +604,10 @@ Reglas de respuesta:
       }
     }
 
-    // LÓGICA BROWSE / DICCIONARIO
     function renderBrowseList() {
       const listEl = document.getElementById('browse-list');
       const searchTerm = document.getElementById('browse-search').value.trim().toLowerCase();
       const categoryFilter = document.getElementById('browse-category-filter').value;
-
       let filtered = words;
       if (searchTerm) {
         filtered = filtered.filter(w =>
@@ -869,19 +616,13 @@ Reglas de respuesta:
           w.language.toLowerCase().includes(searchTerm)
         );
       }
-
-      if (categoryFilter !== 'ALL') {
-        filtered = filtered.filter(w => w.categories && w.categories.includes(categoryFilter));
-      }
-
+      if (categoryFilter !== 'ALL') filtered = filtered.filter(w => w.categories && w.categories.includes(categoryFilter));
       document.getElementById('total-words-count').innerText = filtered.length;
       listEl.innerHTML = '';
-
       if (filtered.length === 0) {
         listEl.innerHTML = '<li style="text-align:center; padding: 12px; color: #6b7280;">No se encontraron palabras.</li>';
         return;
       }
-
       filtered.forEach(w => {
         const li = document.createElement('li');
         li.className = 'word-item';
@@ -909,45 +650,26 @@ Reglas de respuesta:
       const word = document.getElementById('edit-word').value.trim();
       const trans = document.getElementById('edit-trans').value.trim();
       const attempts = parseInt(document.getElementById('edit-attempts').value, 10) || 0;
-      const categories = document.getElementById('edit-categories').value
-        .split(',')
-        .map(c => c.trim())
-        .filter(c => c !== '');
+      const categories = document.getElementById('edit-categories').value.split(',').map(c => c.trim()).filter(c => c !== '');
       const level = parseInt(document.getElementById('edit-level').value, 10) || 0;
-
       if (id) {
         const existing = words.find(w => w.id == id);
         if (existing) {
-          existing.language = lang;
-          existing.word = word;
-          existing.translation = trans;
-          existing.attempts = attempts;
-          existing.categories = categories;
-          existing.level = level;
+          existing.language = lang; existing.word = word; existing.translation = trans;
+          existing.attempts = attempts; existing.categories = categories; existing.level = level;
           existing.remembered = attempts === 0;
           existing.lastPractice = attempts === 0 ? new Date().toISOString() : null;
           existing.nextReview = calculateNextReview(level);
-          if (attempts === 0 && !existing.learnedDate) {
-            existing.learnedDate = new Date().toISOString();
-          }
+          if (attempts === 0 && !existing.learnedDate) existing.learnedDate = new Date().toISOString();
         }
       } else {
-        const newWord = {
-          id: Date.now() + Math.random(),
-          language: lang,
-          word: word,
-          translation: trans,
-          attempts: attempts,
-          categories: categories,
-          level: level,
-          remembered: attempts === 0,
+        words.push({
+          id: Date.now() + Math.random(), language: lang, word, translation: trans,
+          attempts, categories, level, remembered: attempts === 0,
           learnedDate: attempts === 0 ? new Date().toISOString() : null,
-          lastPractice: null,
-          nextReview: calculateNextReview(level)
-        };
-        words.push(newWord);
+          lastPractice: null, nextReview: calculateNextReview(level)
+        });
       }
-
       save();
       resetEditorForm();
       renderBrowseList();
@@ -956,7 +678,6 @@ Reglas de respuesta:
     function loadWordIntoEditor(id) {
       const item = words.find(w => w.id == id);
       if (!item) return;
-
       document.getElementById('edit-id').value = item.id;
       document.getElementById('edit-lang').value = item.language;
       document.getElementById('edit-word').value = item.word;
@@ -964,7 +685,6 @@ Reglas de respuesta:
       document.getElementById('edit-attempts').value = item.attempts;
       document.getElementById('edit-categories').value = item.categories ? item.categories.join(', ') : '';
       document.getElementById('edit-level').value = item.level || 0;
-
       document.getElementById('btn-save-word').innerText = 'Actualizar Palabra';
       document.getElementById('btn-cancel-edit').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -978,7 +698,6 @@ Reglas de respuesta:
       document.getElementById('edit-attempts').value = 3;
       document.getElementById('edit-categories').value = '';
       document.getElementById('edit-level').value = 0;
-
       document.getElementById('btn-save-word').innerText = 'Guardar Palabra';
       document.getElementById('btn-cancel-edit').classList.add('hidden');
     }
@@ -991,18 +710,15 @@ Reglas de respuesta:
       }
     }
 
-    // ESTADÍSTICAS
     function renderStatistics() {
       const totalWords = words.length;
       const rememberedWords = words.filter(w => w.remembered).length;
       const pendingWords = totalWords - rememberedWords;
-      const avgLevel = (words.reduce((sum, w) => sum + w.level, 0) / totalWords).toFixed(1);
-
+      const avgLevel = totalWords ? (words.reduce((sum, w) => sum + w.level, 0) / totalWords).toFixed(1) : '0';
       document.getElementById('stat-total-words').innerText = totalWords;
       document.getElementById('stat-remembered').innerText = rememberedWords;
       document.getElementById('stat-pending').innerText = pendingWords;
       document.getElementById('stat-avg-level').innerText = avgLevel;
-
       renderCategoryChart();
       renderDifficultWordsChart();
       renderActivityChart();
@@ -1013,150 +729,56 @@ Reglas de respuesta:
     function renderCategoryChart() {
       const categoryStats = {};
       words.forEach(w => {
-        if (w.categories) {
-          w.categories.forEach(cat => {
-            if (!categoryStats[cat]) {
-              categoryStats[cat] = { total: 0, remembered: 0 };
-            }
-            categoryStats[cat].total++;
-            if (w.remembered) {
-              categoryStats[cat].remembered++;
-            }
-          });
-        }
+        if (w.categories) w.categories.forEach(cat => {
+          if (!categoryStats[cat]) categoryStats[cat] = { total: 0, remembered: 0 };
+          categoryStats[cat].total++;
+          if (w.remembered) categoryStats[cat].remembered++;
+        });
       });
-
       const labels = Object.keys(categoryStats);
       const data = labels.map(cat => categoryStats[cat].remembered);
-      const backgroundColors = labels.map(() =>
-        `hsl(${Math.random() * 360}, 70%, 60%)`
-      );
-
+      const backgroundColors = labels.map(() => `hsl(${Math.random() * 360}, 70%, 60%)`);
       const ctx = document.getElementById('categoryChart');
       if (ctx) {
-        if (charts.categoryChart) {
-          charts.categoryChart.destroy();
-        }
-
+        if (charts.categoryChart) charts.categoryChart.destroy();
         charts.categoryChart = new Chart(ctx, {
           type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Palabras aprendidas por categoría',
-              data: data,
-              backgroundColor: backgroundColors,
-              borderWidth: 1
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  stepSize: 1
-                }
-              }
-            }
-          }
+          data: { labels, datasets: [{ label: 'Palabras aprendidas por categoría', data, backgroundColor: backgroundColors, borderWidth: 1 }] },
+          options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
         });
       }
     }
 
     function renderDifficultWordsChart() {
-      const difficultWords = words
-        .filter(w => !w.remembered)
-        .sort((a, b) => b.attempts - a.attempts)
-        .slice(0, 5);
-
+      const difficultWords = words.filter(w => !w.remembered).sort((a, b) => b.attempts - a.attempts).slice(0, 5);
       const labels = difficultWords.map(w => w.word);
       const data = difficultWords.map(w => w.attempts);
-
       const ctx = document.getElementById('difficultWordsChart');
       if (ctx) {
-        if (charts.difficultWordsChart) {
-          charts.difficultWordsChart.destroy();
-        }
-
+        if (charts.difficultWordsChart) charts.difficultWordsChart.destroy();
         charts.difficultWordsChart = new Chart(ctx, {
           type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Intentos fallidos',
-              data: data,
-              backgroundColor: '#dc2626',
-              borderWidth: 1
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: 'y',
-            scales: {
-              x: {
-                beginAtZero: true,
-                ticks: {
-                  stepSize: 1
-                }
-              }
-            }
-          }
+          data: { labels, datasets: [{ label: 'Intentos fallidos', data, backgroundColor: '#dc2626', borderWidth: 1 }] },
+          options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
         });
       }
     }
 
     function renderActivityChart() {
       const now = new Date();
-      const last7Days = Array.from({ length: 7 }, (_, i) => {
-        const date = new Date(now);
-        date.setDate(date.getDate() - (6 - i));
-        return date;
-      });
-
+      const last7Days = Array.from({ length: 7 }, (_, i) => { const d = new Date(now); d.setDate(d.getDate() - (6 - i)); return d; });
       const labels = last7Days.map(d => d.toLocaleDateString('es-ES', { weekday: 'short' }));
       const data = last7Days.map(d => {
         const dateStr = d.toISOString().split('T')[0];
-        return words.filter(w => {
-          if (!w.lastPractice) return false;
-          const practiceDate = new Date(w.lastPractice).toISOString().split('T')[0];
-          return practiceDate === dateStr;
-        }).length;
+        return words.filter(w => w.lastPractice && new Date(w.lastPractice).toISOString().split('T')[0] === dateStr).length;
       });
-
       const ctx = document.getElementById('activityChart');
       if (ctx) {
-        if (charts.activityChart) {
-          charts.activityChart.destroy();
-        }
-
+        if (charts.activityChart) charts.activityChart.destroy();
         charts.activityChart = new Chart(ctx, {
           type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Palabras practicadas',
-              data: data,
-              borderColor: '#2563eb',
-              backgroundColor: 'rgba(37, 99, 235, 0.1)',
-              fill: true,
-              tension: 0.3
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  stepSize: 1
-                }
-              }
-            }
-          }
+          data: { labels, datasets: [{ label: 'Palabras practicadas', data, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 }] },
+          options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
         });
       }
     }
@@ -1164,30 +786,17 @@ Reglas de respuesta:
     function renderTopCategories() {
       const categoryStats = {};
       words.forEach(w => {
-        if (w.categories) {
-          w.categories.forEach(cat => {
-            if (!categoryStats[cat]) {
-              categoryStats[cat] = { total: 0, remembered: 0 };
-            }
-            categoryStats[cat].total++;
-            if (w.remembered) {
-              categoryStats[cat].remembered++;
-            }
-          });
-        }
+        if (w.categories) w.categories.forEach(cat => {
+          if (!categoryStats[cat]) categoryStats[cat] = { total: 0, remembered: 0 };
+          categoryStats[cat].total++;
+          if (w.remembered) categoryStats[cat].remembered++;
+        });
       });
-
-      const sortedCategories = Object.entries(categoryStats)
-        .map(([cat, stats]) => ({
-          category: cat,
-          total: stats.total,
-          remembered: stats.remembered,
-          percentage: Math.round((stats.remembered / stats.total) * 100)
-        }))
-        .sort((a, b) => b.percentage - a.percentage);
-
-      const container = document.getElementById('top-categories-list');
-      container.innerHTML = sortedCategories.map(cat => `
+      const sortedCategories = Object.entries(categoryStats).map(([cat, stats]) => ({
+        category: cat, total: stats.total, remembered: stats.remembered,
+        percentage: Math.round((stats.remembered / stats.total) * 100)
+      })).sort((a, b) => b.percentage - a.percentage);
+      document.getElementById('top-categories-list').innerHTML = sortedCategories.map(cat => `
         <div style="margin-bottom: 12px; padding: 12px; background: #f8fafc; border-radius: 8px;">
           <div style="display: flex; justify-content: space-between;">
             <span style="font-weight: bold;">${cat.category}</span>
@@ -1202,29 +811,20 @@ Reglas de respuesta:
 
     function renderUpcomingReviews() {
       const now = new Date();
-      const upcoming = words
-        .filter(w => w.nextReview)
-        .map(w => ({
-          ...w,
-          daysUntilReview: Math.ceil((new Date(w.nextReview) - now) / (1000 * 60 * 60 * 24))
-        }))
-        .filter(w => w.daysUntilReview <= 7)
-        .sort((a, b) => a.daysUntilReview - b.daysUntilReview);
-
+      const upcoming = words.filter(w => w.nextReview).map(w => ({
+        ...w, daysUntilReview: Math.ceil((new Date(w.nextReview) - now) / (1000 * 60 * 60 * 24))
+      })).filter(w => w.daysUntilReview <= 7).sort((a, b) => a.daysUntilReview - b.daysUntilReview);
       const container = document.getElementById('upcoming-review-list');
       if (upcoming.length === 0) {
         container.innerHTML = '<p style="text-align: center; color: #6b7280;">No hay palabras para repasar pronto.</p>';
         return;
       }
-
       container.innerHTML = upcoming.map(w => `
         <div style="margin-bottom: 12px; padding: 12px; background: #f8fafc; border-radius: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
               <strong>${w.word}</strong> (${w.language}) - Nivel ${w.level}
-              <div style="margin-top: 4px; font-size: 14px; color: #6b7280;">
-                ${w.categories ? w.categories.join(', ') : 'Sin categoría'}
-              </div>
+              <div style="margin-top: 4px; font-size: 14px; color: #6b7280;">${w.categories ? w.categories.join(', ') : 'Sin categoría'}</div>
             </div>
             <div style="text-align: right;">
               <div style="font-weight: bold; color: var(--primary);">${w.daysUntilReview} días</div>
@@ -1238,14 +838,11 @@ Reglas de respuesta:
     function handleFileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
       const msgDiv = document.getElementById('import-msg');
-
       reader.onload = function(e) {
         const content = e.target.result;
         let count = 0;
-
         try {
           if (file.name.endsWith('.json')) {
             const parsed = JSON.parse(content);
@@ -1255,8 +852,7 @@ Reglas de respuesta:
                   words.push({
                     id: item.id || (Date.now() + Math.random()),
                     language: item.language || 'General',
-                    word: item.word.trim(),
-                    translation: item.translation.trim(),
+                    word: item.word.trim(), translation: item.translation.trim(),
                     attempts: parseInt(item.attempts, 10) || 3,
                     categories: item.categories || [],
                     level: parseInt(item.level, 10) || 0,
@@ -1270,32 +866,25 @@ Reglas de respuesta:
               });
             }
           } else {
-            const lines = content.split(/\r?\n/);
-            lines.forEach(line => {
+            content.split(/\r?\n/).forEach(line => {
               const cleanLine = line.trim();
               if (!cleanLine) return;
               const parts = cleanLine.includes(';') ? cleanLine.split(';') : cleanLine.split(',');
               if (parts[0].toLowerCase().includes('idioma') || parts[0].toLowerCase().includes('language')) return;
-
               if (parts.length >= 3) {
                 words.push({
                   id: Date.now() + Math.random(),
-                  language: parts[0].trim(),
-                  word: parts[1].trim(),
-                  translation: parts[2].trim(),
+                  language: parts[0].trim(), word: parts[1].trim(), translation: parts[2].trim(),
                   attempts: parseInt(parts[3], 10) || 3,
                   categories: parts[4] ? parts[4].split(',').map(c => c.trim()) : [],
                   level: parseInt(parts[5], 10) || 0,
-                  remembered: false,
-                  learnedDate: null,
-                  lastPractice: null,
+                  remembered: false, learnedDate: null, lastPractice: null,
                   nextReview: calculateNextReview(0)
                 });
                 count++;
               }
             });
           }
-
           save();
           msgDiv.style.color = '#16a34a';
           msgDiv.innerText = `¡Éxito! Se importaron ${count} palabras.`;
@@ -1305,40 +894,34 @@ Reglas de respuesta:
           msgDiv.innerText = 'Error al procesar el archivo.';
         }
       };
-
       reader.readAsText(file);
     }
 
     function exportData(format) {
       let dataStr = '';
       let filename = `vocabulario.${format}`;
-
       if (format === 'json') {
-        dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(words, null, 2));
+        dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(words, null, 2));
       } else {
-        let csvContent = "Idioma,Palabra,Traduccion,Intentos,Categorías,Nivel\n";
+        let csvContent = 'Idioma,Palabra,Traduccion,Intentos,Categorías,Nivel\n';
         words.forEach(w => {
           csvContent += `"${w.language}","${w.word}","${w.translation}",${w.attempts},"${w.categories ? w.categories.join(',') : ''}",${w.level}\n`;
         });
-        dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
+        dataStr = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
       }
-
       const dlAnchor = document.createElement('a');
-      dlAnchor.setAttribute("href", dataStr);
-      dlAnchor.setAttribute("download", filename);
+      dlAnchor.setAttribute('href', dataStr);
+      dlAnchor.setAttribute('download', filename);
       document.body.appendChild(dlAnchor);
       dlAnchor.click();
       dlAnchor.remove();
     }
 
     function updateStats() {
-      const pending = words.filter(w => !w.remembered).length;
-      const remembered = words.filter(w => w.remembered).length;
-      document.getElementById('count-pending').innerText = pending;
-      document.getElementById('count-remembered').innerText = remembered;
+      document.getElementById('count-pending').innerText = words.filter(w => !w.remembered).length;
+      document.getElementById('count-remembered').innerText = words.filter(w => w.remembered).length;
     }
 
-    // Escucha la tecla Enter en cualquier parte de la pantalla
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Enter') {
         const feedbackArea = document.getElementById('feedback-area');
@@ -1349,29 +932,23 @@ Reglas de respuesta:
       }
     });
 
-    // Persistencia del modo de práctica y filtros
     const PRACTICE_PREFS_KEY = 'vocab_app_practice_prefs';
-
     function savePracticeMode() {
       try {
         const prefs = JSON.parse(localStorage.getItem(PRACTICE_PREFS_KEY)) || {};
         const sel = document.getElementById('practice-mode');
         if (sel) prefs.practiceMode = sel.value;
         localStorage.setItem(PRACTICE_PREFS_KEY, JSON.stringify(prefs));
-      } catch (e) { /* almacenamiento no disponible */ }
+      } catch (e) {}
     }
-
     function restorePracticePrefs() {
       try {
         const prefs = JSON.parse(localStorage.getItem(PRACTICE_PREFS_KEY)) || {};
         const sel = document.getElementById('practice-mode');
-        if (sel && prefs.practiceMode && [...sel.options].some(o => o.value === prefs.practiceMode)) {
-          sel.value = prefs.practiceMode;
-        }
-      } catch (e) { /* almacenamiento no disponible */ }
+        if (sel && prefs.practiceMode && [...sel.options].some(o => o.value === prefs.practiceMode)) sel.value = prefs.practiceMode;
+      } catch (e) {}
     }
 
-    // Inicialización
     initializeWords();
     updateLanguageFilterOptions();
     updateCategoryFilterOptions();
