@@ -63,6 +63,12 @@
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .modal-body { margin-bottom: 16px; }
 
+    /* Botones de icono */
+    button.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; margin-top: 0; border-radius: 8px; }
+    button.icon-btn svg { width: 20px; height: 20px; display: block; }
+    .icon-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .icon-row .spacer { flex: 1; }
+
     /* Campo de categorías con botón de sugerencias */
     .categories-container { display: flex; gap: 8px; margin-bottom: 12px; }
     .categories-container input { flex: 1; }
@@ -122,8 +128,14 @@
           <p style="text-align: center; color: #4b5563; margin-top: 8px;">
             Respuesta correcta: <strong id="correct-translation"></strong>
           </p>
-          <div class="flex">
-            <button class="alt" onclick="openEditCurrentModal()">Editar esta palabra</button>
+          <div class="icon-row">
+            <button class="alt icon-btn" title="Editar palabra" aria-label="Editar palabra" onclick="openEditCurrentModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            </button>
+            <button class="danger icon-btn" title="Borrar palabra" aria-label="Borrar palabra" onclick="deleteCurrentWord()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+            <span class="spacer"></span>
             <button class="primary" onclick="renderPractice()">Siguiente palabra</button>
           </div>
         </div>
@@ -616,8 +628,14 @@ Reglas de respuesta:
           <p style="text-align: center; color: #4b5563; margin-top: 8px;">
             Respuesta correcta: <strong id="correct-translation"></strong>
           </p>
-          <div class="flex">
-            <button class="alt" onclick="openEditCurrentModal()">Editar esta palabra</button>
+          <div class="icon-row">
+            <button class="alt icon-btn" title="Editar palabra" aria-label="Editar palabra" onclick="openEditCurrentModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            </button>
+            <button class="danger icon-btn" title="Borrar palabra" aria-label="Borrar palabra" onclick="deleteCurrentWord()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+            <span class="spacer"></span>
             <button class="primary" onclick="renderPractice()">Siguiente palabra</button>
           </div>
         </div>
@@ -775,6 +793,17 @@ Reglas de respuesta:
     // Cerrar modal
     function closeEditCurrentModal() {
       document.getElementById('edit-current-modal').style.display = 'none';
+    }
+
+    // Borrar la palabra en pantalla de práctica y avanzar a la siguiente
+    function deleteCurrentWord() {
+      if (!currentWord) return;
+      if (confirm('¿Seguro que deseas eliminar esta palabra?')) {
+        words = words.filter(w => w.id != currentWord.id);
+        save();
+        currentWord = null;
+        renderPractice();
+      }
     }
 
     // LÓGICA BROWSE / DICCIONARIO
