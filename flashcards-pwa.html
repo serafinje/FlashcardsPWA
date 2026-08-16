@@ -27,6 +27,8 @@
     .flex { display: flex; gap: 8px; }
     .feedback { padding: 12px; border-radius: 8px; margin-top: 12px; font-weight: bold; text-align: center; }
     .feedback.correct { background: #dcfce7; color: #15803d; }
+    .feedback-icon { display: inline-flex; vertical-align: middle; margin-right: 6px; }
+    .feedback-icon svg { width: 18px; height: 18px; display: block; }
     .feedback.incorrect { background: #fee2e2; color: #b91c1c; }
     .file-drop { border: 2px dashed #d1d5db; border-radius: 8px; padding: 16px; text-align: center; background: #fafafa; margin-bottom: 12px; cursor: pointer; }
     small.help-text { color: #6b7280; display: block; margin-top: -8px; margin-bottom: 12px; line-height: 1.4; }
@@ -103,7 +105,7 @@
       </select>
 
       <label for="practice-mode">Modo de práctica:</label>
-      <select id="practice-mode" onchange="renderPractice()">
+      <select id="practice-mode" onchange="savePracticeMode(); renderPractice()">
         <option value="forward">Idioma → Español</option>
         <option value="reverse">Español → Idioma</option>
         <option value="random">Aleatorio</option>
@@ -687,7 +689,10 @@ Reglas de respuesta:
 
       const feedbackMessage = document.getElementById('feedback-message');
       feedbackMessage.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-      feedbackMessage.innerText = isCorrect ? '¡Correcto! (-1 intento)' : 'Incorrecto (+1 intento)';
+      const feedbackIcon = isCorrect
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+      feedbackMessage.innerHTML = `<span class="feedback-icon">${feedbackIcon}</span> ${isCorrect ? '¡Correcto! (-1 intento)' : 'Incorrecto (+1 intento)'}`;
 
       document.getElementById('correct-translation').innerText = currentWord.expectedAnswer;
       feedbackArea.classList.remove('hidden');
@@ -1300,10 +1305,33 @@ Reglas de respuesta:
       }
     });
 
+    // Persistencia del modo de práctica y filtros
+    const PRACTICE_PREFS_KEY = 'vocab_app_practice_prefs';
+
+    function savePracticeMode() {
+      try {
+        const prefs = JSON.parse(localStorage.getItem(PRACTICE_PREFS_KEY)) || {};
+        const sel = document.getElementById('practice-mode');
+        if (sel) prefs.practiceMode = sel.value;
+        localStorage.setItem(PRACTICE_PREFS_KEY, JSON.stringify(prefs));
+      } catch (e) { /* almacenamiento no disponible */ }
+    }
+
+    function restorePracticePrefs() {
+      try {
+        const prefs = JSON.parse(localStorage.getItem(PRACTICE_PREFS_KEY)) || {};
+        const sel = document.getElementById('practice-mode');
+        if (sel && prefs.practiceMode && [...sel.options].some(o => o.value === prefs.practiceMode)) {
+          sel.value = prefs.practiceMode;
+        }
+      } catch (e) { /* almacenamiento no disponible */ }
+    }
+
     // Inicialización
     initializeWords();
     updateLanguageFilterOptions();
     updateCategoryFilterOptions();
+    restorePracticePrefs();
     renderPractice();
     updateStats();
   </script>
